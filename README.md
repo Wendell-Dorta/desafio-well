@@ -1,67 +1,48 @@
-# projeto-aula-php
-repositorio com projeto de php realizado em aula
+# Sistema de Reservas do Restaurante
 
-# Clonar Repositório
+## Faixa de Promoção
 
-```bash
-git clone https://github.com/Wendell-Dorta/projeto-aula-php.git
- 
-```
+Em uma área destacada no topo do site de acesso público, deve haver uma faixa chamativa para a possibilidade de fazer reservas no restaurante. A promoção inclui:
 
-# Configurar VS-Code
+- **Sobremesa grátis** para o titular da reserva.
+- **10% de desconto** em todas as bebidas da comanda da mesa associada à reserva.
 
-```bash
-cd projeto-well/
+## Menu
 
-git config user.name "Wendell Dorta"
-git config user.email "wendelldorta.ws@outlook.com.br"
+- Um item de menu em vermelho chamado **"Faça sua Reserva"**.
+  - Ao clicar, o usuário será direcionado a uma tela que explica as regras dos pedidos de reservas.
 
-git pull origin main
+## Regras de Reserva
 
-clear
- 
-```
+- **Antecedência:** No mínimo 24 horas e no máximo 45 dias.
+- **Limite:** Apenas um pedido de reserva por dia para um mesmo CPF.
+- **Informações Necessárias:** Nome completo, CPF e e-mail.
+  - **CPF e e-mail** são utilizados para login no sistema de reserva, além da senha.
 
-# Enviar primeiro push
+## Cancelamento e Gestão de Reservas
 
-```bash
-git checkout main
-git pull origin main
- 
-git checkout -b att
-git add .
-git commit -m "primeiro commit feito"
- 
-git checkout main
-git pull origin main
-git merge anotacao
- 
-git push origin main
+- **Cancelamento:** Reservas realizadas podem ser canceladas pelo cliente, mas não removidas do banco de dados para futuras promoções.
+- **Administração:** O administrador do sistema deve listar reservas para confirmar ou negar, mas não pode excluir reservas.
+  - Ao confirmar, o administrador inclui o número da mesa reservada, que **não deve ser visível para o cliente**.
+  - O cliente receberá uma notificação por e-mail com o **código gerado pelo sistema (Número de reserva)**, tornando a reserva válida.
+  - Em caso de negativa, o administrador registra o motivo e o cliente recebe essa informação por e-mail.
+- **Remoção:** Administradores podem remover reservas.
 
-clear
- 
-```
+## Área Administrativa
 
-# Fazer commit
+- **Filtros Disponíveis:**
+  - Status
+  - CPF
+  - Data das reservas
 
-```bash
-git checkout main
-git pull origin main
- 
-git checkout att
-git add .
-git commit -m "descrição do que foi feito"
-```
+- **Status Expirado:** No dia seguinte à data das reservas (atendidas ou não), o sistema deve alterar o status para **expirado** e não listar mais como reservas ativas.
 
-# Enviar commit
+## Considerações Adicionais
 
-```bash
-git checkout main
-git pull origin main
-git merge att
- 
-git push origin main
-
-clear
- 
-```
+- Reservas serão consideradas apenas se alteradas para **confirmada**.
+- O cliente deve indicar:
+  - Data escolhida
+  - Horário
+  - Número de pessoas
+  - Motivo da reserva (opcional):
+    - Exemplo: "Aniversário", "Casamento", "Confraternização", etc. Não Obrigatorio
