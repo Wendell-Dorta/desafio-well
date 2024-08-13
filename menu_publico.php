@@ -3,7 +3,6 @@
     $lista_tipos = $conn -> query('SELECT * FROM tipos ORDER BY rotulo');
     $rows_tipos = $lista_tipos -> fetch_all();
 ?>
-
 <!-- bootstrap -->
 <!-- abre a barra de navegação -->
 <nav class="navbar navbar-expanded-md navbar-light navbar-inverse">
