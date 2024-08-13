@@ -6,7 +6,7 @@
 
 <!-- bootstrap -->
 <!-- abre a barra de navegação -->
-<nav class="navbar navbar-expanded-md navbar-fixed-top navbar-light navbar-inverse">
+<nav class="navbar navbar-expanded-md navbar-light navbar-inverse">
     <div class="conteinar-fluid">
         <!-- agrupamento Mobile -->
         <div class="navbar-header">

@@ -13,10 +13,17 @@
 </head>
 
 <body class="fundofixo">
+    <!-- area reservas -->
+    <section class="">
+        <div>
+            <div></div>
+            <div></div>
+            <button></button>
+        </div>
+    </section>
     <!-- area de menu -->
     <?php include 'menu_publico.php';?>
     <a name="home">&nbsp;</a>
-
     <main class="container">
         <!-- área de carousel -->
         <?php include 'corousel.php'; ?>
