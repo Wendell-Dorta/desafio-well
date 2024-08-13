@@ -2,11 +2,6 @@
 
 @charset "utf8";
 
-body {
-    padding-top: 40px;
-    margin-top: 40px;    
-}
-
 .fundofixo {
     background: url('../images/churrascaria.jpg') no-repeat fixed;
     -webkit-background-size: cover;
@@ -19,8 +14,9 @@ body {
 
 .anuncio-reservas {
     background-color: rgb(148, 0, 0);
-    display: inline;
-    min-height: 5rem;
+    width: max-content;
+    position: fixed;
+    z-index: 999;
 }
 
 .reservas {

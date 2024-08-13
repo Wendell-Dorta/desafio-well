@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse" id="menupublico">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active">
-                    <a href="index.php">
+                    <a href="../../index.php">
                         <span class="glyphicon glyphicon-home"></span>
                     </a>
                 </li>
