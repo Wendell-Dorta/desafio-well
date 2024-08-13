@@ -13,29 +13,16 @@
 </head>
 
 <body class="fundofixo">
-
-
     <!-- anuncio reservas -->
-    <section class="navbar navbar-expand-lg navbar-light bg-light h-100">
-        <div class=" container-fluid">
-        <div class="row">
-            <div class="anuncio-reservas col-lg-12">
-                <div>
-                    <h1>
-                        Reservas Disponiveis
-                    </h1>
-                </div>
-                <div>
-                    Sobremesas *GRATIS* para o titular da reserva
-                </div>
-                <div>
-                    Desconto de 10% em *TODAS AS BEBIDAS*
-                </div>
-                <button class="btn btn-danger btn-lg">FAÇA SUA RESERVA</button>
-            </div>
-        </div>
-        </div>
-    </section>
+    <div class="container-fluid fixed-top">
+        <section class="anuncio-reservas d-inline">
+            <marquee style="font-size: 2rem;">
+               <strong>RESERVAS DISPONIVEIS</strong> | Ganhe sobremesas <strong>GRATIS</strong> | <strong>DESCONTO DE 10%</strong> em <strong>TODAS</strong> as bebidas
+            </marquee>
+        </section>
+    </div>
+
+    <br>
 
     <!-- area de menu -->
     <?php include 'menu_publico.php';?>
