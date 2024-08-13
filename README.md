@@ -48,4 +48,4 @@ Em uma área destacada no topo do site de acesso público, deve haver uma faixa 
     - Exemplo: "Aniversário", "Casamento", "Confraternização", etc. Não Obrigatorio
 
 # como está o banco
-![logico banco](arquivos_projeto/database/print_banco.png)
+![logico banco](/arquivos_projeto/database/print_banco.PNG)
