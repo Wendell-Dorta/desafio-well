@@ -13,15 +13,20 @@
 }
 
 .anuncio-reservas {
-    background-color: rgb(148, 0, 0);
-    width: max-content;
     position: fixed;
-    z-index: 999;
-}
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgb(148, 0, 0);
+    padding: 1rem;
+    text-align: center;
+    color: aliceblue;
+  }
 
 .reservas {
     background-color: rgb(223, 4, 4);
-    color: white;
+    color: rgb(221, 214, 214);
 }
 
 .reservas:hover {

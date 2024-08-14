@@ -83,6 +83,7 @@ CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `login` varchar(30) NOT NULL,
   `senha` varchar(32) NOT NULL,
+  `ativo` BIT NOT NULL DEFAULT 1,
   `nivel_id` INT(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -111,7 +112,6 @@ CREATE TABLE `clientes` (
     nome VARCHAR(100) NOT NULL,
     cpf char(11) NOT NULL, 
     email VARCHAR(255) NOT NULL,
-    ativo BIT NOT NULL DEFAULT 1,
     usuario_id INT(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -244,6 +244,7 @@ CREATE VIEW `vw_reservas` AS
 		JOIN clientes cl ON cr.cliente_id = cl.id
 		JOIN mesas me ON cr.mesas_id = me.id
 		JOIN `status` st ON cr.status_id = st.id
+    JOIN usuarios us ON us.id = cl.usuario_id
 	JOIN reservas re ON cr.reserva_id = re.id;
 COMMIT;
 
@@ -261,3 +262,25 @@ CREATE VIEW `vw_clientes` AS
 		JOIN clientes cl ON us.id = cl.usuario_id
 	JOIN niveis ni ON us.nivel_id = ni.id;
 COMMIT;
+
+-- atualizar para expirado apos um dia
+CREATE TRIGGER tg_update_status
+AFTER INSERT ON reservas
+FOR EACH ROW
+BEGIN
+    UPDATE reservas
+    SET status_id = (SELECT id FROM `status` WHERE descricao = 'Expirado')
+    WHERE id = NEW.id
+    AND data < DATE_SUB(CURDATE(), INTERVAL 1 DAY);
+END;
+
+-- ver se o cliente ja tem uma reserva no mesmo dia
+CREATE CONSTRAINT chk_limite_reservas_por_dia
+CHECK (
+    NOT EXISTS (
+        SELECT 1
+        FROM cliente_reserva cr
+        WHERE cr.cliente_id = NEW.cliente_id
+        AND DATE(cr.reserva_id) = DATE(NEW.data)
+    )
+);

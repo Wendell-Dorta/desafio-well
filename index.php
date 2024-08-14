@@ -15,14 +15,13 @@
 <body class="fundofixo">
     <!-- anuncio reservas -->
     <div class="container-fluid">
-        <div class="anuncio-reservas wd-100 p-3">
+        <div class="anuncio-reservas">
             <marquee style="font-size: 2rem;"><strong>RESERVAS DISPONIVEIS</strong> | Ganhe sobremesas
                 <strong>GRATIS</strong> | <strong>DESCONTO DE 10%</strong> em <strong>TODAS</strong> as bebidas
             </marquee>
         </div>
     </div>
-
-    <br><br>
+    <br><br><br>
 
     <!-- area de menu -->
     <?php include 'menu_publico.php';?>

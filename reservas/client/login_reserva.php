@@ -4,6 +4,17 @@
     if ($_POST) {
         $login = $_POST['login'];
         $senha = md5($_POST['senha']);
+        if (preg_match('/^[0-9]{11}$/', $login)) {
+            $loginRes = $conn->query("SELECT * FROM `clientes` WHERE `cpf` = '$login' AND `senha` = '$senha'");
+        } 
+        // Verifica se o valor digitado é um e-mail
+        elseif (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            $loginRes = $conn->query("SELECT * FROM `clientes` WHERE `email` = '$login' AND `senha` = '$senha'");
+        } 
+        else {
+            echo "<script>window.open('invasor.php','_self')</script>";
+            exit;
+        }
         $loginRes = $conn->query("SELECT * FROM `usuarios` WHERE `login` = '$login' AND senha = '$senha'");
         $rowLogin = $loginRes -> fetch_assoc();
         $numRow = $loginRes->num_rows;
@@ -66,7 +77,7 @@
                                             <span class="glyphicon glyphicon-user text-info" aria-hidden="true"></span>
                                         </span>
                                         <input type="text" name="login" id="login" class="form-control" autofocus
-                                            required autocomplete="off" placeholder="Digite seu login.">
+                                            required autocomplete="off" placeholder="Digite seu CPF ou Email.">
                                     </p>
                                     <label for="senha">Senha:</label>
                                     <p class="input-group">
