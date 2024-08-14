@@ -28,10 +28,10 @@
             $_SESSION['login_usuario'] = $login;
             $_SESSION['nivel_usuario'] = $rowLogin['nivel']; // -> nivel ("-- se tivesse usando fetch_object --")
             $_SESSION['nome_da_sessao'] = session_name();
-            if ($rowLogin['nivel'] == 'sup') {
+            if ($rowLogin['nivel'] == 'cliente') {
                 echo "<script>window.open('index.php','_self')</script>";
             } else {
-                echo "<script>window.open('../cliente/index.php?cliente=".$login."','_self')</script>";
+                echo "<script>window.open('../admin/index.php?cliente=".$login."','_self')</script>";
             }
         }
         else {
