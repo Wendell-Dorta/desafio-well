@@ -4,34 +4,33 @@
     if ($_POST) {
         $login = $_POST['login'];
         $senha = md5($_POST['senha']);
-        if (preg_match('/^[0-9]{11}$/', $login)) {
-            $loginRes = $conn->query("SELECT * FROM `clientes` WHERE `cpf` = '$login' AND `senha` = '$senha'");
+        if (preg_match("/^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/", $login)) {
+            $loginRes = $conn->query("SELECT * FROM vw_clientes WHERE cpf = '$login' AND senha = '$senha' AND ativo = 1");
         } 
         // Verifica se o valor digitado é um e-mail
-        elseif (filter_var($login, FILTER_VALIDATE_EMAIL)) {
-            $loginRes = $conn->query("SELECT * FROM `clientes` WHERE `email` = '$login' AND `senha` = '$senha'");
+        else if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            $loginRes = $conn->query("SELECT * FROM vw_clientes WHERE email = '$login' AND senha = '$senha' AND ativo = 1");
         } 
         else {
             echo "<script>window.open('invasor.php','_self')</script>";
             exit;
         }
-        $loginRes = $conn->query("SELECT * FROM `usuarios` WHERE `login` = '$login' AND senha = '$senha'");
         $rowLogin = $loginRes -> fetch_assoc();
         $numRow = $loginRes->num_rows;
         // verifica se a sessão não existir
         if (!isset($_SESSION)) {
-            $sessaoAntiga = session_name('chulettaaa');
+            $sessaoAntiga = session_name('chulettaaaresss');
             session_start();
             $session_name_new = session_name();
         }
         if ($numRow > 0) {
             $_SESSION['login_usuario'] = $login;
-            $_SESSION['nivel_usuario'] = $rowLogin['nivel']; // -> nivel ("-- se tivesse usando fetch_object --")
+            $_SESSION['nivel_usuario'] = $rowLogin['rotulo']; // -> nivel ("-- se tivesse usando fetch_object --")
             $_SESSION['nome_da_sessao'] = session_name();
-            if ($rowLogin['nivel'] == 'cliente') {
+            if ($rowLogin['rotulo'] == 'Cliente') {
                 echo "<script>window.open('index.php','_self')</script>";
             } else {
-                echo "<script>window.open('../admin/index.php?cliente=".$login."','_self')</script>";
+               echo "<script>window.open('../admin/login.php','_self')</script>";
             }
         }
         else {
@@ -69,7 +68,7 @@
                             </p>
                             <br>
                             <div class="alert alert-info" role="alert">
-                                <form action="login.php" name="form_login" id="form_login" method="POST"
+                                <form action="login_reserva.php" name="form_login" id="form_login" method="POST"
                                     enctype="multipart/form-data">
                                     <label for="login">Login:</label>
                                     <p class="input-group">
@@ -90,6 +89,10 @@
                                     </p>
                                     <p class="text-right">
                                         <input type="submit" value="Entrar" class="btn btn-primary">
+                                        <a type="button" href="cadastro_cliente.php" class="btn btn-success text-left">Cadastre-se</a>
+                                    </p>
+                                    <p class="text-left">
+                                        
                                     </p>
                                 </form>
                                 <p class="text-center">

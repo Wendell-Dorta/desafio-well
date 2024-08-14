@@ -14,6 +14,7 @@
 
 <body>
     <?php include 'menu_reservas.php'; ?>
+    <?php include 'client_option.php'; ?>
 
 </body>
 

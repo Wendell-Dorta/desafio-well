@@ -1,3 +1,10 @@
+
+-- Drop Database:
+DROP DATABASE
+	IF EXISTS `tincphpdb01`;
+
+-- --------------------------------------------------------
+
 -- Database: 
 CREATE DATABASE
 	IF NOT EXISTS `tincphpdb01`
@@ -159,7 +166,7 @@ ALTER TABLE `status`
 -- Estrutura para tabela `reservas`
 CREATE TABLE `reservas` (
   	id INT(11) NOT NULL,
-    data TIMESTAMP NOT NULL,
+    data_reserva TIMESTAMP NOT NULL,
     numero_pessoas TINYINT(3) NOT NULL, 
     motivo_reserva VARCHAR(100) NULL,
     ativo BIT NOT NULL DEFAULT 1
@@ -180,8 +187,9 @@ CREATE TABLE `cliente_reserva` (
     reserva_id INT(11) NOT NULL,
     status_id INT(11) NOT NULL,
     mesa_id INT(11) NULL,
-    motivo_cancelamento VARCHAR(150) NOT NULL,
-    numero_reserva VARCHAR(10) NOT NULL
+    motivo_cancelamento VARCHAR(150) NULL,
+    numero_reserva VARCHAR(10) NULL,
+    data_reserva_feita TIMESTAMP NOT NULL DEFAULT  CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Índices de tabela `cliente_reserva`
@@ -221,19 +229,21 @@ COMMIT;
 
 -- Criando a view vw_reservas
 CREATE VIEW `vw_reservas` AS
-	SELECT st.sigla, 
-		   st.rotulo, 
-           me.numero,
-           me.capacidade, 
+	SELECT st.sigla as status_sigla, 
+		   st.rotulo as status_rotulo, 
+           me.id as id_da_mesa,
+           me.numero as mesa_numero,
+           me.capacidade as mesa_capacidade, 
+           cl.id as id_do_cliente,
            cl.nome, 
            cl.cpf, 
            cl.email, 
            us.ativo,
-           re.`data`, 
+           re.id as id_da_reserva,
+           re.data_reserva, 
            re.numero_pessoas, 
            re.motivo_reserva, 
-           re.ativo, 
-           cr.id,
+           cr.id as cliente_reserva_id,
            cr.cliente_id, 
            cr.reserva_id, 
            cr.status_id, 
@@ -242,7 +252,7 @@ CREATE VIEW `vw_reservas` AS
            cr.numero_reserva
 	FROM cliente_reserva cr 
 		JOIN clientes cl ON cr.cliente_id = cl.id
-		JOIN mesas me ON cr.mesas_id = me.id
+		JOIN mesas me ON cr.mesa_id = me.id
 		JOIN `status` st ON cr.status_id = st.id
     JOIN usuarios us ON us.id = cl.usuario_id
 	JOIN reservas re ON cr.reserva_id = re.id;
@@ -264,6 +274,8 @@ CREATE VIEW `vw_clientes` AS
 COMMIT;
 
 -- atualizar para expirado apos um dia
+/*
+DELIMITER $
 CREATE TRIGGER tg_update_status
 AFTER INSERT ON reservas
 FOR EACH ROW
@@ -272,15 +284,16 @@ BEGIN
     SET status_id = (SELECT id FROM `status` WHERE descricao = 'Expirado')
     WHERE id = NEW.id
     AND data < DATE_SUB(CURDATE(), INTERVAL 1 DAY);
-END;
+END $
+DELIMITER ;
 
 -- ver se o cliente ja tem uma reserva no mesmo dia
-CREATE CONSTRAINT chk_limite_reservas_por_dia
-CHECK (
-    NOT EXISTS (
-        SELECT 1
-        FROM cliente_reserva cr
-        WHERE cr.cliente_id = NEW.cliente_id
-        AND DATE(cr.reserva_id) = DATE(NEW.data)
-    )
-);
+ALTER TABLE cliente_reserva
+ADD CONSTRAINT chk_limite_reservas_por_dia CHECK (
+	NOT EXISTS (
+		SELECT *
+		FROM cliente_reserva cr
+		WHERE cr.cliente_id = NEW.cliente_id
+		AND DATE(cr.reserva_id) = DATE(NEW.data)
+	)
+); */

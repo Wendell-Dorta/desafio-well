@@ -1,6 +1,6 @@
 <?php 
     // nome da sessão
-    session_name('chulettaaa');
+    session_name('chulettaaaresss');
     if (!isset($_SESSION)) {
         session_start(); // inicia sessão
     }

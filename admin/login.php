@@ -7,6 +7,7 @@
         $loginRes = $conn->query("SELECT * FROM `usuarios` WHERE `login` = '$login' AND senha = '$senha'");
         $rowLogin = $loginRes -> fetch_assoc();
         $numRow = $loginRes->num_rows;
+        print_r($rowLogin);
         // verifica se a sessão não existir
         if (!isset($_SESSION)) {
             $sessaoAntiga = session_name('chulettaaa');
@@ -15,16 +16,16 @@
         }
         if ($numRow > 0) {
             $_SESSION['login_usuario'] = $login;
-            $_SESSION['nivel_usuario'] = $rowLogin['nivel']; // -> nivel ("-- se tivesse usando fetch_object --")
+            $_SESSION['nivel_usuario'] = $rowLogin['nivel_id']; // -> nivel ("-- se tivesse usando fetch_object --")
             $_SESSION['nome_da_sessao'] = session_name();
-            if ($rowLogin['nivel'] == 'sup') {
+            if ($rowLogin['nivel_id'] == 1) {
                 echo "<script>window.open('index.php','_self')</script>";
             } else {
                 echo "<script>window.open('../cliente/index.php?cliente=".$login."','_self')</script>";
             }
         }
         else {
-            echo "<script>window.open('invasor.php','_self')</script>";
+            //echo "<script>window.open('invasor.php','_self')</script>";
         }
         
     }
