@@ -89,12 +89,12 @@ CREATE TABLE `usuarios` (
 
 -- Inserindo Dados na Tabela `usuarios'
 INSERT INTO `usuarios` 
-	(`id`, `login`, `senha`, `nivel`) 
+	(`id`, `login`, `senha`, `nivel_id`) 
 	VALUES
-		(1, 'senac', md5('1234'), 'sup'),
-		(2, 'joao', md5('456'), 'com'),
-		(3, 'maria', md5('789'), 'com'),
-		(4, 'well', md5('1234'), 'sup');
+		(1, 'senac', md5('1234'), 1),
+		(2, 'joao', md5('456'), 2),
+		(3, 'maria', md5('789'), 2),
+		(4, 'well', md5('1234'), 1);
 
 -- Índices de tabela `usuarios`
 ALTER TABLE `usuarios`
@@ -120,7 +120,7 @@ ALTER TABLE `clientes`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY (`cpf`),
   ADD UNIQUE KEY (`email`),
-  ADD FOREIGN KEY (`usuarios_id`) REFERENCES usuarios(`id`);
+  ADD FOREIGN KEY (`usuario_id`) REFERENCES usuarios(`id`);
 
 -- AUTO_INCREMENT de tabela `clientes`
 ALTER TABLE `clientes`
@@ -228,7 +228,7 @@ CREATE VIEW `vw_reservas` AS
            cl.nome, 
            cl.cpf, 
            cl.email, 
-           cl.ativo,
+           us.ativo,
            re.`data`, 
            re.numero_pessoas, 
            re.motivo_reserva, 
