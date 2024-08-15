@@ -17,6 +17,8 @@
 </head>
 
 <body class="fundofixo">
+    <?php include 'anuncio_reserva.php';?>
+    <br><br><br>
     <?php include "menu_publico.php" ?>
     <div class="container">
         <!-- monstrar se a consulta retornar vazio -->

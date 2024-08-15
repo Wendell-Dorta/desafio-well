@@ -22,10 +22,13 @@
 </head>
 
 <body class="fundofixo">
-
+    <!-- anuncio reservas -->
+    <?php include 'anuncio_reserva.php';?>
+    <br><br><br>
+    <!-- area de menu -->
+    <?php include 'menu_publico.php'; ?>
     <main class="container">
-        <!-- area de menu -->
-        <?php include 'menu_publico.php'; // não era pra ta na pasta php/ (ate porque não era pra te a pasta php/) mas não gosto de varios arquivos php(html seja oq for) fora de pasta ?>
+
         <a name="home">&nbsp;</a>
         <!-- mostrar se a consulta retorna vazio -->
         <?php if($numLinhas == 0) { ?>

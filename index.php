@@ -14,15 +14,8 @@
 
 <body class="fundofixo">
     <!-- anuncio reservas -->
-    <div class="container-fluid">
-        <div class="anuncio-reservas">
-            <marquee style="font-size: 2rem;"><strong>RESERVAS DISPONÍVEIS</strong> | Ganhe sobremesas
-                <strong>GRÁTIS</strong> | <strong>DESCONTO DE 10%</strong> em <strong>TODAS</strong> as bebidas
-            </marquee>
-        </div>
-    </div>
+    <?php include 'anuncio_reserva.php';?>
     <br><br><br>
-
     <!-- area de menu -->
     <?php include 'menu_publico.php';?>
     <a name="home">&nbsp;</a>
