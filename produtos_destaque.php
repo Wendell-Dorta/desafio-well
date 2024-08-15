@@ -1,7 +1,7 @@
 <?php 
     // colocar o mesmo nome de variavel de outro arquivo pode dar ruim, ja que estão sendo incluidos no index
     include 'conn/connect.php';
-    $lista = $conn -> query("SELECT * FROM vw_produtos WHERE destaque='Sim' ORDER BY descricao");
+    $lista = $conn -> query("SELECT * FROM vw_produtos WHERE destaque=1 ORDER BY descricao");
     $row_produtos = $lista -> fetch_assoc();
     $num_linhas = $lista -> num_rows;
 ?>

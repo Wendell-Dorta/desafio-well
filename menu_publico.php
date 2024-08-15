@@ -72,7 +72,7 @@
                 </form>
                 <!-- fim formulário de busca -->
                 <li class="active">
-                    <a href="admin/index.php">
+                    <a href="menu_login.php">
                         <span class="glyphicon glyphicon-user">&nbsp;ADMIN/CLIENTE</span>
                     </a>
                 </li>

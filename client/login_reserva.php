@@ -1,5 +1,10 @@
 <?php
     include '../conn/connect.php';
+    // verifica se ja tem uma sessão ativa
+    if ( session_status() == PHP_SESSION_ACTIVE) {
+        session_start();
+        echo "<script>window.open('index.php','_self')</script>";
+    }
     // inicia a verificação do login
     if ($_POST) {
         $login = $_POST['login'];

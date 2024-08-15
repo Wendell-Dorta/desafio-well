@@ -1,6 +1,6 @@
 <?php
     include '../conn/connect.php';
-    // inicia a verificação do login
+    // verifica se ja tem uma sessão ativa
     if ($_POST) {
         $login = $_POST['login'];
         $senha = md5($_POST['senha']);
