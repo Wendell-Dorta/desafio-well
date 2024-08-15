@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre a Reserva</title>
     <!-- link css -->
-    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="css/estilo.css">
     <!-- link bootstrap -->
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <style>
         /* Adiciona um background branco para o container */
         .container {
@@ -68,7 +68,7 @@
 
 <body class="fundofixo">
     <!-- menu publico -->
-    <?php include 'menu_reservas.php'; ?>
+    <?php include 'menu_publico.php'; ?>
 
     <div class="container">
         <h1 class="text-center">Sobre a Reserva</h1>
@@ -116,7 +116,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <p>Faça sua reserva</p>
-                <a href="faca_reserva.php" class="btn-reserva">Reservas</a>
+                <a href="reservas/client/faca_reserva.php" class="btn-reserva">Reservas</a>
             </div>
         </div>
     </div>
@@ -124,7 +124,7 @@
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="../../js/bootstrap.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
 <!-- arrow function -->
 <script type="text/javascript">

@@ -15,7 +15,8 @@
             echo "<script>window.open('invasor.php','_self')</script>";
             exit;
         }
-        $rowLogin = $loginRes -> fetch_assoc();
+        $rowLogin = $loginRes->fetch_assoc();
+        print_r($rowLogin);
         $numRow = $loginRes->num_rows;
         // verifica se a sessão não existir
         if (!isset($_SESSION)) {
@@ -26,15 +27,16 @@
         if ($numRow > 0) {
             $_SESSION['login_usuario'] = $login;
             $_SESSION['nivel_usuario'] = $rowLogin['rotulo']; // -> nivel ("-- se tivesse usando fetch_object --")
+            $_SESSION['id_cliente'] = $rowLogin['cliente_id'];
             $_SESSION['nome_da_sessao'] = session_name();
             if ($rowLogin['rotulo'] == 'Cliente') {
                 echo "<script>window.open('index.php','_self')</script>";
             } else {
-               echo "<script>window.open('../admin/login.php','_self')</script>";
+              echo "<script>window.open('../admin/login.php','_self')</script>";
             }
         }
         else {
-            echo "<script>window.open('invasor.php','_self')</script>";
+           echo "<script>window.open('invasor.php','_self')</script>";
         }
         
     }

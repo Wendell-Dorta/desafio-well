@@ -1,20 +1,26 @@
 <?php
     include 'acesso_res.php';
     include '../../conn/connect.php';
+
+    
     if ($_POST) {
         $data = $_POST['data'];
         $numPessoas = $_POST['numPessoas'];
         $motivo = $_POST['motivo'];
 
         $insereReserva = "INSERT INTO reservas (data_reserva,numero_pessoas,motivo_reserva,ativo) VALUES ('$data',$numPessoas,'$motivo',DEFAULT)";
-        $idReserva = $conn->query("SELECT last_insert_id");
+        $resultado = $conn->query($insereReserva);
+        $idReserva = mysqli_insert_id($conn);
         
+        if (isset($_SESSION['login_usuario'])) {
+            $cliente_id = $_SESSION['id_cliente'];
+        }
         
-        // $insereClienteReserva = "INSERT INTO cliente_reserva (cliente_id, status_id,reserva_id,data_reserva_feita) VALUES (5,1,$idReserva,DEFAULT)";
-        // $resultado = $conn->query($insereClienteReserva);
-        // if (mysqli_insert_id($conn)) {
-        //     header('location:lista_reservas.php');
-        // }
+        $insereClienteReserva = "INSERT INTO cliente_reserva (cliente_id, status_id,reserva_id,data_reserva_feita) VALUES ($cliente_id,1,$idReserva,DEFAULT)";
+        $resultado = $conn->query($insereClienteReserva);
+        if (mysqli_insert_id($conn)) {
+            header('location:lista_reservas.php');
+        }
     }
 ?>
 
@@ -44,8 +50,8 @@
                 </h2>
                 <div class="thumbnail">
                     <div class="alert alert-danger" role="alert">
-                        <form action="faca_reserva.php" method="post" name="form_insere"
-                            enctype="multipart/form-data" id="form_insere">
+                        <form action="faca_reserva.php" method="post" name="form_insere" enctype="multipart/form-data"
+                            id="form_insere">
                             <label for="destaque">Data e Hora:</label>
                             <div class="input-group">
                                 <span class="input-group-addon">

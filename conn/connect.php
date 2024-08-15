@@ -1,6 +1,6 @@
 <?php 
     $host = "localhost";
-    $database = "tincphpdb02";
+    $database = "tincphpdb01";
     $user = "root";
     $pass = ""; 
     $charset = "utf8";

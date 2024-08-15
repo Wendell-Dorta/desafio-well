@@ -229,34 +229,28 @@ COMMIT;
 
 -- Criando a view vw_reservas
 CREATE VIEW `vw_reservas` AS
-	SELECT st.sigla as status_sigla, 
-		   st.rotulo as status_rotulo, 
-           me.id as id_da_mesa,
-           me.numero as mesa_numero,
-           me.capacidade as mesa_capacidade, 
-           cl.id as id_do_cliente,
-           cl.nome, 
-           cl.cpf, 
-           cl.email, 
-           us.ativo,
-           re.id as id_da_reserva,
-           re.data_reserva, 
-           re.numero_pessoas, 
-           re.motivo_reserva, 
-           cr.id as cliente_reserva_id,
-           cr.cliente_id, 
-           cr.reserva_id, 
-           cr.status_id, 
-           cr.mesa_id, 
-           cr.motivo_cancelamento, 
-           cr.numero_reserva
-	FROM cliente_reserva cr 
-		JOIN clientes cl ON cr.cliente_id = cl.id
-		JOIN mesas me ON cr.mesa_id = me.id
-		JOIN `status` st ON cr.status_id = st.id
-    JOIN usuarios us ON us.id = cl.usuario_id
-	JOIN reservas re ON cr.reserva_id = re.id;
-COMMIT;
+SELECT 
+  cr.id AS cliente_reserva_id,
+  cl.id AS id_do_cliente,
+  cl.nome,
+  cl.cpf,
+  cl.email,
+  re.id AS id_da_reserva,
+  re.data_reserva,
+  re.numero_pessoas,
+  re.motivo_reserva,
+  st.sigla AS status_sigla,
+  st.rotulo AS status_rotulo,
+  me.id AS id_da_mesa,
+  me.numero AS mesa_numero,
+  me.capacidade AS mesa_capacidade,
+  cr.motivo_cancelamento,
+  cr.numero_reserva
+FROM cliente_reserva cr
+  JOIN clientes cl ON cr.cliente_id = cl.id
+  JOIN reservas re ON cr.reserva_id = re.id
+  JOIN `status` st ON cr.status_id = st.id
+  LEFT JOIN mesas me ON cr.mesa_id = me.id;
 
 -- Criando a view vw_clientes
 CREATE VIEW `vw_clientes` AS
@@ -280,20 +274,31 @@ CREATE TRIGGER tg_update_status
 AFTER INSERT ON reservas
 FOR EACH ROW
 BEGIN
-    UPDATE reservas
-    SET status_id = (SELECT id FROM `status` WHERE descricao = 'Expirado')
-    WHERE id = NEW.id
-    AND data < DATE_SUB(CURDATE(), INTERVAL 1 DAY);
+    IF DATE_SUB(CURDATE(), INTERVAL 1 DAY) = NEW.data_reserva THEN
+        UPDATE reservas
+        SET status_id = (SELECT id FROM `status` WHERE descricao = 'Expirado')
+        WHERE id = NEW.id;
+        DELETE FROM reservas_ativas WHERE reserva_id = NEW.id;
+    END IF;
 END $
 DELIMITER ;
 
 -- ver se o cliente ja tem uma reserva no mesmo dia
-ALTER TABLE cliente_reserva
-ADD CONSTRAINT chk_limite_reservas_por_dia CHECK (
-	NOT EXISTS (
-		SELECT *
-		FROM cliente_reserva cr
-		WHERE cr.cliente_id = NEW.cliente_id
-		AND DATE(cr.reserva_id) = DATE(NEW.data)
-	)
-); */
+DELIMITER $
+CREATE TRIGGER trg_limite_reservas_por_dia
+BEFORE INSERT ON cliente_reserva
+FOR EACH ROW
+BEGIN
+    IF EXISTS (
+        SELECT *
+        FROM reservas r
+        JOIN cliente_reserva cr ON r.id = cr.reserva_id
+        WHERE cr.cliente_id = NEW.cliente_id
+        AND DATE(r.data_reserva) = DATE(NEW.data_reserva_feita)
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Limite de reservas por dia excedido';
+    END IF;
+END$
+DELIMITER ;
+
+*/
