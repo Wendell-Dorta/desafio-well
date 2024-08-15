@@ -1,5 +1,5 @@
 <?php
-    include '../../conn/connect.php';
+    include '../conn/connect.php';
     // inicia a verificação do login
     if ($_POST) {
         $login = $_POST['login'];
@@ -27,7 +27,7 @@
         if ($numRow > 0) {
             $_SESSION['login_usuario'] = $login;
             $_SESSION['nivel_usuario'] = $rowLogin['rotulo']; // -> nivel ("-- se tivesse usando fetch_object --")
-            $_SESSION['id_cliente'] = $rowLogin['cliente_id'];
+            $_SESSION['cliente_id'] = $rowLogin['cliente_id'];
             $_SESSION['nome_da_sessao'] = session_name();
             if ($rowLogin['rotulo'] == 'Cliente') {
                 echo "<script>window.open('index.php','_self')</script>";
@@ -49,10 +49,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="30;URL=../index.php">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/2495680ceb.js" crossorigin="anonymous"></script>
     <!-- Link para CSS específico -->
-    <link rel="stylesheet" href="../../css/estilo.css" type="text/css">
+    <link rel="stylesheet" href="../css/estilo.css" type="text/css">
 
     <title>Chuleta Quente - Login Reservas</title>
 </head>
@@ -115,7 +115,7 @@
 
     <!-- Link arquivos Bootstrap js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
 </body>
 
 </html>

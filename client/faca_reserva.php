@@ -1,25 +1,37 @@
 <?php
     include 'acesso_res.php';
-    include '../../conn/connect.php';
+    include '../conn/connect.php';
 
     
     if ($_POST) {
+        // buscando dados para inserção
         $data = $_POST['data'];
         $numPessoas = $_POST['numPessoas'];
         $motivo = $_POST['motivo'];
+        // recuperando id do cliente
+        if (isset($_SESSION['login_usuario'])) {
+            $cliente_id = $_SESSION['cliente_id'];
+        }
 
+        
+        // inserindo dados na tabela reserva
         $insereReserva = "INSERT INTO reservas (data_reserva,numero_pessoas,motivo_reserva,ativo) VALUES ('$data',$numPessoas,'$motivo',DEFAULT)";
         $resultado = $conn->query($insereReserva);
-        $idReserva = mysqli_insert_id($conn);
+        $reserva_id = mysqli_insert_id($conn);
         
-        if (isset($_SESSION['login_usuario'])) {
-            $cliente_id = $_SESSION['id_cliente'];
-        }
         
-        $insereClienteReserva = "INSERT INTO cliente_reserva (cliente_id, status_id,reserva_id,data_reserva_feita) VALUES ($cliente_id,1,$idReserva,DEFAULT)";
+
+        // buscar id do status "Andamento"
+        $status = $conn->query("SELECT * FROM `status` WHERE rotulo = 'Andamento'");
+        $rowStatus = $status->fetch_assoc();
+        $status_id = $rowStatus['id'];
+
+        // inserindo dados na tabela cliente_reserva
+        $insereClienteReserva = "INSERT INTO cliente_reserva (cliente_id, status_id,reserva_id,data_reserva_feita) VALUES ($cliente_id,$status_id,$reserva_id,DEFAULT)";
+        print_r($insereClienteReserva);
         $resultado = $conn->query($insereClienteReserva);
         if (mysqli_insert_id($conn)) {
-            header('location:lista_reservas.php');
+           header('location:lista_reservas.php');
         }
     }
 ?>
@@ -30,8 +42,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/estilo.css">
     <title>Fazer Reservas</title>
 </head>
 

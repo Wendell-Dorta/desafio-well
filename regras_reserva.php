@@ -116,7 +116,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <p>Faça sua reserva</p>
-                <a href="reservas/client/faca_reserva.php" class="btn-reserva">Reservas</a>
+                <a href="client/faca_reserva.php" class="btn-reserva">Reservas</a>
             </div>
         </div>
     </div>

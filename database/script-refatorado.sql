@@ -162,6 +162,11 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT de tabela `status`
 ALTER TABLE `status`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  
+INSERT INTO `tincphpdb01`.`status` (`id`, `sigla`, `rotulo`) VALUES ('1', 'AND', 'Andamento');
+INSERT INTO `tincphpdb01`.`status` (`id`, `sigla`, `rotulo`) VALUES ('2', 'APR', 'Aprovado');
+INSERT INTO `tincphpdb01`.`status` (`id`, `sigla`, `rotulo`) VALUES ('3', 'CAN', 'Cancelado');
+INSERT INTO `tincphpdb01`.`status` (`id`, `sigla`, `rotulo`) VALUES ('4', 'EXP', 'Expirado');
     
 -- Estrutura para tabela `reservas`
 CREATE TABLE `reservas` (
@@ -254,9 +259,11 @@ FROM cliente_reserva cr
 
 -- Criando a view vw_clientes
 CREATE VIEW `vw_clientes` AS
-	SELECT cl.nome, 
+	SELECT cl.id as cliente_id,
+		   cl.nome, 
 		   cl.cpf, 
            cl.email, 
+           us.id as usuario_id,
            us.login, 
            us.senha, 
            us.ativo,
@@ -268,7 +275,6 @@ CREATE VIEW `vw_clientes` AS
 COMMIT;
 
 -- atualizar para expirado apos um dia
-/*
 DELIMITER $
 CREATE TRIGGER tg_update_status
 AFTER INSERT ON reservas
@@ -300,5 +306,3 @@ BEGIN
     END IF;
 END$
 DELIMITER ;
-
-*/

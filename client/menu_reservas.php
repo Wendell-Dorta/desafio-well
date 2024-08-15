@@ -11,8 +11,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="../../index.php" class="navbar-brand">
-                <img src="../../images/logo-chuleta.png" alt="Logotipo Chuleta Quente">
+            <a href="../index.php" class="navbar-brand">
+                <img src="../images/logo-chuleta.png" alt="Logotipo Chuleta Quente">
             </a>
         </div>
         <!-- fecha agrupamento mobile -->
@@ -20,25 +20,24 @@
         <div class="collapse navbar-collapse" id="menupublico">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active">
-                    <a href="../../index.php">
+                    <a href="../index.php">
                         <span class="glyphicon glyphicon-home"></span>
                     </a>
                 </li>
                 <li>
-                    <a href="regras_reserva.php#informacoes">INFORMAÇÕES</a>
+                    <a href="lista_reservas.php">LISTA DE RESERVAS</a>
                 </li>
                 <li>
-                    <a href="regras_reserva.php#limite">LIMITE</a>
-                </li>
-                <li>
-                    <a href="regras_reserva.php#antecedencia">ANTECEDENCIA</a>
-                </li>
-                <li>
-                    <a href="regras_reserva.php#reserva">FAÇA SUA RESERVA</a>
+                    <a href="faca_reserva.php">FAZER RESERVAS</a>
                 </li>
                 <li class="active">
                     <a href="index.php">
                         <span class="glyphicon glyphicon-user">&nbsp;USER</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="logout.php">
+                        <span class="glyphicon glyphicon-log-out"></span>
                     </a>
                 </li>
             </ul>
