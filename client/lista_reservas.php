@@ -7,8 +7,9 @@
         $cliente_id = $_SESSION['cliente_id'];
     }
 
-    $lista = $conn->query("SELECT * FROM vw_reservas WHERE id_do_cliente = $cliente_id AND status_rotulo != 'Cancelado' ORDER BY data_reserva" );
+    $lista = $conn->query("SELECT * FROM vw_reservas WHERE id_do_cliente = $cliente_id AND status_rotulo != 'Cancelado' ORDER BY dia" );
     $row = $lista->fetch_assoc();
+    $num_linhas = $lista->num_rows;
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +44,8 @@
                         <th>Numero de Pessoas</th>
                         <th>Stauts da Reserva</th>
                         <th>Dia da Reserva</th>
-                        <th>Hora da Reserva</th>
+                        <th>Hora de Inicio da Reserva</th>
+                        <th>Hora do Fim da Reserva</th>
                         <th>Ações</th>
                     </thead>
 
@@ -52,6 +54,7 @@
                         <!-- início estrutura repetição -->
                         <?php 
                 do {
+                    if ($num_linhas > 0) {
                 ?>
                         <tr>
                             <td class="hidden"><?= $row['id'] ?></td>
@@ -59,8 +62,10 @@
                             <td><?= $row['motivo_reserva']; ?></td>
                             <td><?= $row['numero_pessoas']; ?></td>
                             <td><?= $row['status_rotulo']; ?></td>
-                            <td><?= date_format(date_create($row['data_reserva']), 'd/m/Y'); ?></td>
-                            <td><?= date_format(date_create($row['data_reserva']), 'H:i'); ?></td>
+                            <td><?= date('d/m/Y', strtotime($row['dia'])); ?></td>
+                            <td><?= date('H:i', strtotime($row['hora_inicio'])); ?></td>
+                            <td><?= date('H:i', strtotime($row['hora_fim'])); ?></td>
+                            
                             <td>
                                 <button data-nome="<?= $row['nome']; ?>" data-id="<?= $row['cliente_reserva_id']; ?>"
                                     class="delete btn btn-xs btn-block btn-danger">
@@ -71,6 +76,9 @@
                         </tr>
 
                         <?php 
+                    } else {
+                        echo "Não foi feita nenhuma reserva";
+                    }
                 } while ($row = $lista->fetch_assoc());
                 ?>
                     </tbody><!-- final corpo da tabela -->

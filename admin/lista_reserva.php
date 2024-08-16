@@ -1,11 +1,47 @@
 <?php
     include 'acesso_com.php';
     include '../conn/connect.php';
-    
 
-    $lista = $conn->query("SELECT * FROM vw_reservas WHERE status_rotulo = 'Andamento'  ORDER BY data_reserva");
+    if ($_GET) {    
+        $status = $_GET['status'];
+        $cpf = $_GET['cpf'];
+        $dia = $_GET['dia'];
+    }
+
+    if (isset($status) && $status != '' &&
+        isset($cpf) && $cpf != '' &&
+        isset($dia) && $dia != '') {
+        // Filtra por todas as 3 opções
+        $query = "SELECT * FROM vw_reservas WHERE status_rotulo = '$status' AND cpf = '$cpf' AND dia = '$dia'";
+    } elseif (isset($status) && $status != '' &&
+        isset($cpf) && $cpf != '') {
+        // Filtra por status e CPF
+        $query = "SELECT * FROM vw_reservas WHERE status_rotulo = '$status' AND cpf = '$cpf'";
+    } elseif (isset($status) && $status != '' &&
+        isset($dia) && $dia != '') {
+        // Filtra por status e data de reserva
+        $query = "SELECT * FROM vw_reservas WHERE status_rotulo = '$status' AND dia = '$dia'";
+    } elseif (isset($cpf) && $cpf != '' &&
+        isset($dia) && $dia != '') {
+        // Filtra por CPF e data de reserva
+        $query = "SELECT * FROM vw_reservas WHERE cpf = '$cpf' AND dia = '$dia'";
+    } elseif (isset($status) && $status != '') {
+        // Filtra por status
+        $query = "SELECT * FROM vw_reservas WHERE status_rotulo = '$status'";
+    } elseif (isset($cpf) && $cpf != '') {
+        // Filtra por CPF
+        $query = "SELECT * FROM vw_reservas WHERE cpf = '$cpf'";
+    } elseif (isset($dia) && $dia != '') {
+        // Filtra por data de reserva
+        $query = "SELECT * FROM vw_reservas WHERE dia = '$dia'";
+    } else {
+        // Mostra todas as reservas
+        $query = "SELECT * FROM vw_reservas";
+    } 
+    $query .= " ORDER BY dia";
+
+    $lista = $conn->query($query);
     $row = $lista->fetch_assoc();
-    $quant_rows = $lista-> num_rows;
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +68,25 @@
                     </a>
                     Lista
                 </h2>
+                <!-- listar por status, cpf ou data de reserva -->
+                <form action="" method="get">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status">
+                        <option value="">Todos</option>
+                        <option value="Andamento">Andamento</option>
+                        <option value="Aprovado">Aprovado</option>
+                        <option value="Negado">Negado</option>
+                        <option value="Negado">Expirado</option>
+                    </select>
+
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" name="cpf" placeholder="CPF do cliente">
+
+                    <label for="data_reserva">Data da reserva:</label>
+                    <input type="date" id="dia" name="dia">
+
+                    <button type="submit">Filtrar</button>
+                </form>
                 <table class="table table-hover table-condensed tb-opacidade bg-warning">
                     <thead>
                         <th class="hidden">ID</th>
@@ -40,7 +95,8 @@
                         <th>Numero de Pessoas</th>
                         <th>Stauts da Reserva</th>
                         <th>Dia da Reserva</th>
-                        <th>Hora da Reserva</th>
+                        <th>Hora de Inicio da Reserva</th>
+                        <th>Hora do Fim da Reserva</th>
                         <th>Ações</th>
                     </thead>
 
@@ -48,9 +104,8 @@
                         <!-- início corpo da tabela -->
                         <!-- início estrutura repetição -->
                         <?php 
-                        if ($quant_rows == 0) {
-                        } else {
                             do {
+                                if ($row !== null) {
                         ?>
                         <tr>
                             <td class="hidden"><?= $row['id'] ?></td>
@@ -58,8 +113,9 @@
                             <td><?= $row['motivo_reserva']; ?></td>
                             <td><?= $row['numero_pessoas']; ?></td>
                             <td><?= $row['status_rotulo']; ?></td>
-                            <td><?= date_format(date_create($row['data_reserva']), 'd/m/Y'); ?></td>
-                            <td><?= date_format(date_create($row['data_reserva']), 'H:i'); ?></td>
+                            <td><?= date('d/m/Y', strtotime($row['dia'])); ?></td>
+                            <td><?= date('H:i', strtotime($row['hora_inicio'])); ?></td>
+                            <td><?= date('H:i', strtotime($row['hora_fim'])); ?></td>
                             <td>
                                 <a href="aprovar_reserva.php?id=<?= $row['cliente_reserva_id'] ?>" role="button"
                                     class="btn btn-success btn-block btn-xs">
@@ -75,7 +131,8 @@
                         </tr>
 
                         <?php 
-                } while ($row = $lista->fetch_assoc());}
+                        }
+                } while ($row = $lista->fetch_assoc());
                 ?>
                     </tbody><!-- final corpo da tabela -->
                 </table>

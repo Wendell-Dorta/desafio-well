@@ -6,6 +6,8 @@
     if ($_POST) {
         // buscando dados para inserção
         $data = $_POST['data'];
+        $hora_inicio = $_POST['horaIncio'];
+        $hora_fim = $_POST['horaFim'];
         $numPessoas = $_POST['numPessoas'];
         $motivo = $_POST['motivo'];
         // recuperando id do cliente
@@ -15,7 +17,7 @@
 
         
         // inserindo dados na tabela reserva
-        $insereReserva = "INSERT INTO reservas (data_reserva,numero_pessoas,motivo_reserva,ativo) VALUES ('$data',$numPessoas,'$motivo',DEFAULT)";
+        $insereReserva = "INSERT INTO reservas (dia,hora_inicio,hora_fim,numero_pessoas,motivo_reserva,ativo) VALUES ('$data','$hora_inicio','$hora_fim',$numPessoas,'$motivo',DEFAULT)";
         $resultado = $conn->query($insereReserva);
         $reserva_id = mysqli_insert_id($conn);
         
@@ -64,12 +66,26 @@
                     <div class="alert alert-danger" role="alert">
                         <form action="faca_reserva.php" method="post" name="form_insere" enctype="multipart/form-data"
                             id="form_insere">
-                            <label for="destaque">Data e Hora:</label>
+                            <label for="destaque">Data:</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
                                 </span>
-                                <input type="datetime-local" name="data" id="data" class="form-control" placeholder=>
+                                <input type="date" name="data" id="data" class="form-control">
+                            </div>
+                            <label for="destaque">Hora de Inicio:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
+                                </span>
+                                <input type="time" name="horaIncio" id="data" class="form-control">
+                            </div>
+                            <label for="destaque">Hora do Fim:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
+                                </span>
+                                <input type="time" name="horaFim" id="data" class="form-control">
                             </div>
                             <label for="descricao">Numero Pessoas:</label>
                             <div class="input-group">

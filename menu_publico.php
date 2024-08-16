@@ -55,7 +55,7 @@
                 <!-- fim do dropdown -->
                 <li><a href="index.php#contato">CONTATOS</a></li>
                 <li class="reservas">
-                    <a  href="regras_reserva.php" style="color: white;">RESERVAS</a>
+                    <a  href="regras_reserva.php" style="color: white;">FAÇA SUA RESERVA</a>
                 </li>
                 <!-- inicio formulario de busca -->
                 <form action="produtos_busca.php" method="get" name="form-busca" id="form-busca"

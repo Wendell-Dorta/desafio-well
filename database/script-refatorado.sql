@@ -171,7 +171,9 @@ INSERT INTO `tincphpdb01`.`status` (`id`, `sigla`, `rotulo`) VALUES ('4', 'EXP',
 -- Estrutura para tabela `reservas`
 CREATE TABLE `reservas` (
   	id INT(11) NOT NULL,
-    data_reserva TIMESTAMP NOT NULL,
+    dia datetime NOT NULL,
+    hora_inicio time NOT NULL, 
+    hora_fim time NOT NULL,
     numero_pessoas TINYINT(3) NOT NULL, 
     motivo_reserva VARCHAR(100) NULL,
     ativo BIT NOT NULL DEFAULT 1
@@ -194,7 +196,7 @@ CREATE TABLE `cliente_reserva` (
     mesa_id INT(11) NULL,
     motivo_cancelamento VARCHAR(150) NULL,
     numero_reserva VARCHAR(10) NULL,
-    data_reserva_feita TIMESTAMP NOT NULL DEFAULT  CURRENT_TIMESTAMP
+    data_reserva_feita TIMESTAMP NOT NULL DEFAULT  CURRENT_TIMESTAMP,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Índices de tabela `cliente_reserva`
@@ -241,7 +243,9 @@ SELECT
   cl.cpf,
   cl.email,
   re.id AS id_da_reserva,
-  re.data_reserva,
+  re.dia,
+  re.hora_inicio,
+  re.hora_fim,
   re.numero_pessoas,
   re.motivo_reserva,
   st.sigla AS status_sigla,
@@ -289,9 +293,21 @@ BEGIN
 END $
 DELIMITER ;
 
+-- ver se a reserva esta entre 1 e 45 dias de antecedencia
+DELIMITER $
+CREATE TRIGGER trg_verificar_antecedencia
+BEFORE INSERT ON reservas
+FOR EACH ROW
+BEGIN
+    IF (NEW.dia < (CURDATE() + INTERVAL 1 DAY)) OR (NEW.dia > (CURDATE() + INTERVAL 45 DAY)) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Antecedência inválida';
+    END IF;
+END$
+DELIMITER ;
+
 -- ver se o cliente ja tem uma reserva no mesmo dia
 DELIMITER $
-CREATE TRIGGER trg_limite_reservas_por_dia
+CREATE TRIGGER trg_verificar_limite_reservas
 BEFORE INSERT ON cliente_reserva
 FOR EACH ROW
 BEGIN
@@ -300,7 +316,7 @@ BEGIN
         FROM reservas r
         JOIN cliente_reserva cr ON r.id = cr.reserva_id
         WHERE cr.cliente_id = NEW.cliente_id
-        AND DATE(r.data_reserva) = DATE(NEW.data_reserva_feita)
+        AND DATE(r.dia) = DATE(NEW.dia)
     ) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Limite de reservas por dia excedido';
     END IF;
