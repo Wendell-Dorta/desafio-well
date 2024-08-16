@@ -280,15 +280,12 @@ COMMIT;
 
 -- atualizar para expirado apos um dia
 DELIMITER $
-CREATE TRIGGER tg_update_status
-AFTER INSERT ON reservas
+CREATE TRIGGER trg_verificar_antecedencia
+BEFORE INSERT ON reservas
 FOR EACH ROW
 BEGIN
-    IF DATE_SUB(CURDATE(), INTERVAL 1 DAY) = NEW.data_reserva THEN
-        UPDATE reservas
-        SET status_id = (SELECT id FROM `status` WHERE descricao = 'Expirado')
-        WHERE id = NEW.id;
-        DELETE FROM reservas_ativas WHERE reserva_id = NEW.id;
+    IF NEW.dia < (CURDATE() + INTERVAL 1 DAY) OR NEW.dia > (CURDATE() + INTERVAL 45 DAY) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Antecedência inválida';
     END IF;
 END $
 DELIMITER ;
@@ -316,9 +313,10 @@ BEGIN
         FROM reservas r
         JOIN cliente_reserva cr ON r.id = cr.reserva_id
         WHERE cr.cliente_id = NEW.cliente_id
-        AND DATE(r.dia) = DATE(NEW.dia)
+        AND r.dia = NEW.dia
+        AND r.cpf = (SELECT cpf FROM clientes WHERE id = NEW.cliente_id)
     ) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Limite de reservas por dia excedido';
     END IF;
-END$
+END $
 DELIMITER ;
