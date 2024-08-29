@@ -144,7 +144,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Vamos deletar?</h4>
+                    <h4>Cancelar Reserva</h4>
                     <button class="close" data-dismiss="modal" type="button">
                         &times;
 
@@ -152,27 +152,15 @@
                 </div>
                 <div class="modal-body">
                     Deseja mesmo negar a reserva do cliente <span class="nome text-danger"></span>?
-                    for
                 </div>
-                <form action="negar_reserva.php" method="post">
-                    <input type="hidden" name="id" value="<?= $row['cliente_reserva_id'] ?>">
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-                        </span>
-                        <textarea name="motivo" id="motivo" cols="30" rows="8" class="form-control"
-                            placeholder="Fale o motivo da negação da reserva"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <!-- <a href="#" type="button" >
-                            
-                        </a> -->
-                        <input type="submit" value="Confirmar" class="btn btn-danger delete-yes">
-                        <button class="btn btn-success" data-dismiss="modal">
-                            Cancelar
-                        </button>
-                    </div>
-                </form>
+                <div class="modal-footer">
+                    <a href="#" type="button" class="btn btn-danger delete-yes">
+                        Sim
+                    </a>
+                    <button class="btn btn-success" data-dismiss="modal">
+                        Não
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -186,6 +174,8 @@ $('.delete').on('click', function() {
     var id = $(this).data('id'); // busca o id da reserva (data-id)
     //console.log(id + ' - ' + nome); //exibe no console
     $('span.nome').text(nome); // insere o nome do cliente na confirmação
+    $('a.delete-yes').attr('href', 'negar_reserva.php?id=' +
+        id); //chama o arquivo php para excluir a reserva
     $('#modalEdit').modal('show'); // chamar o modal
 });
 </script>

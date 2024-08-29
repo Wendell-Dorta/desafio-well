@@ -16,21 +16,7 @@
 
          $resultado = $conn->query($update);
          if ($resultado) {
-            $listaCliente = $conn->query("SELECT * FROM cliente WHERE id = $id");
-            $rowCliente = $listaCliente->fetch_assoc();
-            $email_enviar = $rowCliente['email'];
-            $assunto = "Reserva Aprovada - Chuleta Quente";
-            $corpo = "Olá, a sua reserva foi aprovada, o número da sua reserva é $numero_reserva";
-            $headers = "From:projetouso2@gmail.com";
-
-            if (mail($email_enviar,$assunto,$corpo,$headers)) {
-                echo "Email enviado com sucesso para $email_enviar";
-            } else {
-                echo "Falha ao enviar o email para $email_enviar";
-            }
-
-
-            //header('location:lista_reserva.php');
+            header('location:lista_reserva.php');
          }
     }
     if ($_GET) {

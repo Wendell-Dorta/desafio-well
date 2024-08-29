@@ -76,8 +76,6 @@
                         </tr>
 
                         <?php 
-                    } else {
-                        echo "Não foi feita nenhuma reserva";
                     }
                 } while ($row = $lista->fetch_assoc());
                 ?>
@@ -91,14 +89,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Vamos deletar?</h4>
+                    <h4>Cancelar Reserva</h4>
                     <button class="close" data-dismiss="modal" type="button">
                         &times;
 
                     </button>
                 </div>
                 <div class="modal-body">
-                    Deseja mesmo excluir a reserva do cliente <span class="nome text-danger"></span>?
+                    Deseja mesmo cancelar a sua reserva <span class="nome text-danger"></span>?
                 </div>
                 <div class="modal-footer">
                     <a href="#" type="button" class="btn btn-danger delete-yes">
